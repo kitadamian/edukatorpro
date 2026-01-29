@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edukator Pro - Oficjalne Źródła Nauki</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        .source-card:hover { transform: translateY(-5px); transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-slate-900 border-b dark:border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-indigo-600 dark:text-indigo-400 text-2xl"></i>
+                    <span class="font-bold text-xl tracking-tight">Edukator<span class="text-indigo-600 dark:text-indigo-400">Pro</span></span>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <nav class="hidden md:flex space-x-8 text-sm font-medium mr-4">
+                        <a href="#about" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">O projekcie</a>
+                        <a href="#sources" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Baza źródeł</a>
+                    </nav>
+                    
+                    <!-- Dark Mode Toggle Button -->
+                    <button id="darkModeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:ring-2 hover:ring-indigo-400 transition">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block"></i>
+                    </button>
+
+                    <a href="#search" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium hidden sm:block">Szukaj naukowo</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-indigo-900 dark:bg-indigo-950 text-white py-16 px-4">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Twoje centrum zweryfikowanej wiedzy</h1>
+            <p class="text-lg text-indigo-100 mb-8 max-w-2xl mx-auto">
+                Dostęp do oficjalnych materiałów dydaktycznych, repozytoriów naukowych i platform edukacyjnych zatwierdzonych przez ekspertów.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <span class="px-3 py-1 bg-indigo-800 dark:bg-indigo-900 rounded-full text-sm">#SzkołaPodstawowa</span>
+                <span class="px-3 py-1 bg-indigo-800 dark:bg-indigo-900 rounded-full text-sm">#Liceum</span>
+                <span class="px-3 py-1 bg-indigo-800 dark:bg-indigo-900 rounded-full text-sm">#UczelnieWyższe</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Search Section -->
+    <section id="search" class="py-12 px-4 -mt-10">
+        <div class="max-w-3xl mx-auto bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-indigo-100 dark:border-slate-800">
+            <h2 class="text-xl font-bold mb-4 flex items-center text-slate-900 dark:text-white">
+                <i class="fas fa-search-plus mr-2 text-indigo-600 dark:text-indigo-400"></i> Wyszukiwarka Naukowa (AI)
+            </h2>
+            <div class="space-y-4">
+                <input id="searchQuery" type="text" placeholder="Wpisz zagadnienie (np. zasady dynamiki Newtona, bibliografia do pracy)..." 
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
+                <button onclick="performSearch()" class="w-full bg-indigo-600 text-white font-semibold py-3 rounded-xl hover:bg-indigo-700 transition flex justify-center items-center">
+                    <span id="searchBtnText">Szukaj w bazach danych</span>
+                    <div id="loader" class="hidden ml-3 w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                </button>
+            </div>
+            <div id="searchResults" class="mt-6 hidden space-y-4 max-h-96 overflow-y-auto">
+                <!-- Wyniki zostaną wstrzyknięte tutaj -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sources Grid -->
+    <main id="sources" class="max-w-7xl mx-auto px-4 py-12 flex-grow">
+        <h2 class="text-3xl font-bold text-center mb-12 text-slate-900 dark:text-white">Rekomendowane Źródła Oficjalne</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Source 1 -->
+            <div class="source-card bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-book-open text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 dark:text-white">Zintegrowana Platforma Edukacyjna</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Oficjalny portal Ministerstwa Edukacji (zpe.gov.pl) z darmowymi e-materiałami dla szkół podstawowych i ponadpodstawowych.</p>
+                <a href="https://zpe.gov.pl" target="_blank" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Otwórz portal &rarr;</a>
+            </div>
+
+            <!-- Source 2 -->
+            <div class="source-card bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-university text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 dark:text-white">Polona - Biblioteka Narodowa</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Największa w Polsce biblioteka cyfrowa. Dostęp do milionów książek, map, rękopisów i grafik w wysokiej jakości.</p>
+                <a href="https://polona.pl" target="_blank" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Przeszukaj zbiory &rarr;</a>
+            </div>
+
+            <!-- Source 3 -->
+            <div class="source-card bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-microscope text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 dark:text-white">Google Scholar</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Niezbędne narzędzie dla studentów i naukowców do wyszukiwania artykułów recenzowanych, prac dyplomowych i patentów.</p>
+                <a href="https://scholar.google.pl" target="_blank" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Szukaj publikacji &rarr;</a>
+            </div>
+
+            <!-- Source 4 -->
+            <div class="source-card bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-language text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 dark:text-white">PWN - Encyklopedia i Słowniki</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Rzetelne źródło definicji, haseł encyklopedycznych i zasad poprawnej polszczyzny. Gwarancja poprawności merytorycznej.</p>
+                <a href="https://encyklopedia.pwn.pl" target="_blank" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Sprawdź hasło &rarr;</a>
+            </div>
+
+            <!-- Source 5 -->
+            <div class="source-card bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-atom text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 dark:text-white">Khan Academy (PL)</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Darmowe kursy z matematyki, fizyki, chemii i wielu innych przedmiotów. Światowy standard jakości w nauczaniu online.</p>
+                <a href="https://pl.khanacademy.org" target="_blank" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Zacznij naukę &rarr;</a>
+            </div>
+
+            <!-- Source 6 -->
+            <div class="source-card bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                <div class="w-12 h-12 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-globe-europe text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 dark:text-white">Europeana</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Wielojęzyczne cyfrowe archiwum dziedzictwa kulturowego Europy. Idealne dla studentów historii i sztuki.</p>
+                <a href="https://www.europeana.eu/pl" target="_blank" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Odkryj historię &rarr;</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- About Author Section -->
+    <section id="about" class="bg-slate-100 dark:bg-slate-900/50 py-16 px-4 transition-colors">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-2xl font-bold mb-6 dark:text-white">O autorze</h2>
+            <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-md inline-block max-w-full border border-slate-100 dark:border-slate-800">
+                <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                    <div class="w-24 h-24 bg-indigo-500 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                        DK
+                    </div>
+                    <div class="text-left">
+                        <h3 class="text-xl font-bold dark:text-white">Damian Kita</h3>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4">Pasjonat edukacji i technologii, dążący do ułatwienia dostępu do rzetelnej wiedzy w erze cyfrowej dezinformacji.</p>
+                        <a href="https://linktr.ee/kitadamian" target="_blank" class="inline-flex items-center px-6 py-2 bg-slate-900 dark:bg-indigo-600 text-white rounded-full hover:bg-slate-800 dark:hover:bg-indigo-700 transition">
+                            <i class="fas fa-external-link-alt mr-2"></i> Więcej o mnie
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-950 border-t dark:border-slate-800 py-8 text-center text-slate-500 dark:text-slate-400 text-sm">
+        <p>&copy; 2024 Edukator Pro. Strona stworzona na podstawie oficjalnych źródeł naukowych.</p>
+        <p class="mt-2">Autor: Damian Kita. Responsywność: Desktop, Tablet, Mobile.</p>
+    </footer>
+
+    <script>
+        const apiKey = ""; 
+
+        // Dark Mode Logic
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const htmlElement = document.documentElement;
+
+        // Check for saved theme
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', currentTheme);
+        });
+
+        async function performSearch() {
+            const query = document.getElementById('searchQuery').value;
+            if (!query) return;
+
+            const resultsDiv = document.getElementById('searchResults');
+            const loader = document.getElementById('loader');
+            const btnText = document.getElementById('searchBtnText');
+
+            resultsDiv.classList.add('hidden');
+            loader.classList.remove('hidden');
+            btnText.textContent = "Analizuję źródła...";
+
+            const systemPrompt = `Jesteś asystentem naukowym. Na podstawie zapytania użytkownika znajdź i wymień oficjalne, sprawdzone źródła edukacyjne (np. strony rządowe, uniwersyteckie, biblioteki cyfrowe). Podaj krótkie uzasadnienie, dlaczego to źródło jest wiarygodne. Używaj języka polskiego. Odpowiedź sformatuj w czytelnych akapitach.`;
+
+            try {
+                const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: query }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] },
+                        tools: [{ "google_search": {} }]
+                    })
+                });
+
+                const data = await response.json();
+                const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "Nie znaleziono szczegółowych wyników.";
+                const groundings = data.candidates?.[0]?.groundingMetadata?.groundingAttributions || [];
+
+                displayResults(text, groundings);
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="text-red-500">Wystąpił błąd podczas pobierania danych. Spróbuj ponownie później.</p>`;
+                resultsDiv.classList.remove('hidden');
+            } finally {
+                loader.classList.add('hidden');
+                btnText.textContent = "Szukaj w bazach danych";
+            }
+        }
+
+        async function fetchWithRetry(url, options, retries = 5, backoff = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) return response;
+                } catch (err) {}
+                await new Promise(r => setTimeout(r, backoff * Math.pow(2, i)));
+            }
+            throw new Error("Błąd połączenia po wielu próbach.");
+        }
+
+        function displayResults(text, groundings) {
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.classList.remove('hidden');
+            
+            let html = `
+                <div class="prose prose-sm dark:prose-invert text-slate-700 dark:text-slate-300">
+                    <p class="font-semibold text-indigo-600 dark:text-indigo-400 mb-2">Analiza naukowa:</p>
+                    <div class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">${text.replace(/\n/g, '<br>')}</div>
+                </div>
+            `;
+
+            if (groundings.length > 0) {
+                html += `<div class="mt-4"><p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Źródła bibliograficzne:</p><div class="flex flex-wrap gap-2">`;
+                groundings.forEach(g => {
+                    if (g.web) {
+                        html += `<a href="${g.web.uri}" target="_blank" class="text-xs bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-2 py-1 rounded border border-indigo-100 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition">${g.web.title}</a>`;
+                    }
+                });
+                html += `</div></div>`;
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        document.getElementById('searchQuery').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+    </script>
+</body>
+</html>
